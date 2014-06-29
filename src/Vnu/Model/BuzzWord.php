@@ -29,6 +29,8 @@ class BuzzWord extends Model
     }
 
     /**
+     * Get the score
+     *
      * @return mixed
      */
     public function getScore()
@@ -37,6 +39,8 @@ class BuzzWord extends Model
     }
 
     /**
+     * Get the word
+     *
      * @return mixed
      */
     public function getWord()

@@ -5,7 +5,6 @@
 
 namespace Vnu\FileParser;
 
-
 interface FileParserInterface {
 
     public function setFileContent($fileContent);

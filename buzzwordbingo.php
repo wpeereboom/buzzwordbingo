@@ -5,7 +5,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 use Vnu\BuzzwordBingo;
 use Vnu\FileParser\BuzzWordFileParser;
 use Vnu\FileParser\UrlFileParser;
-use Vnu\JobPostingParser;
+use Vnu\JobPostingRetriever;
 use Vnu\ScoreList;
 
 if(!isset($argv[1]) || !isset($argv[2]) ) {
@@ -23,7 +23,7 @@ $urlFileParser = new UrlFileParser();
 $urlFileParser->setFileContent(file_get_contents($argv[2]));
 
 $scoreList = new ScoreList();
-$jobPostingParser = new JobPostingParser();
+$jobPostingParser = new JobPostingRetriever();
 
 $bingo = new BuzzwordBingo($buzzWordFileParser, $urlFileParser, $jobPostingParser, $scoreList);
 $result = $bingo->run();

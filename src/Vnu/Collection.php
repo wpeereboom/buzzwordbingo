@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Winfred Peereboom <wpeereboom@gmail.com>
+ */
 
 namespace Vnu;
 
@@ -65,5 +67,4 @@ class Collection implements Iterator
     {
         return $this->key() !== null;
     }
-
 }

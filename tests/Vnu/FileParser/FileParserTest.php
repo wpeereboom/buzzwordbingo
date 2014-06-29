@@ -14,7 +14,6 @@ class FileParserTest extends \PHPUnit_Framework_TestCase
         $fileParser = new FileParser();
         $fileParser->setFileContent($expected);
         $this->assertEquals($expected, $fileParser->getStructuredContent());
-
     }
 }
  

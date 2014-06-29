@@ -3,9 +3,9 @@
  * Winfred Peereboom <wpeereboom@gmail.com>
  */
 
-namespace Vnu;
+namespace Vnu\Score;
 
-class ScoreList implements ScoreListInterface
+class ResultList implements ResultListInterface
 {
 
     /**

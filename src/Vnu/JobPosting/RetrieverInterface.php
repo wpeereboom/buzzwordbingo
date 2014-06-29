@@ -3,11 +3,9 @@
  * Winfred Peereboom <wpeereboom@gmail.com>
  */
 
-namespace Vnu;
+namespace Vnu\JobPosting;
 
-use Vnu\Exception\InCorrectUrlException;
-
-interface JobPostingParserInterface {
+interface RetrieverInterface {
 
     /**
      * Get the content of the given url

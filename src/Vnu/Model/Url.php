@@ -5,7 +5,6 @@
 
 namespace Vnu\Model;
 
-
 class Url extends Model
 {
 
@@ -23,6 +22,8 @@ class Url extends Model
     }
 
     /**
+     * Get the url
+     *
      * @return string
      */
     public function getUrl()

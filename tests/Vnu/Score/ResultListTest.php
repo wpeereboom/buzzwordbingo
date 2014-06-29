@@ -5,8 +5,9 @@
 
 namespace Vnu;
 
+use Vnu\Score\ResultList;
 
-class ScoreListTest extends \PHPUnit_Framework_TestCase
+class ResultListTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testAddItems()
@@ -14,10 +15,10 @@ class ScoreListTest extends \PHPUnit_Framework_TestCase
         $name = "First record";
         $score = 100;
 
-        $scoreList = new ScoreList();
-        $scoreList->addCandidate($name, $score);
+        $resultList = new ResultList();
+        $resultList->addCandidate($name, $score);
 
-        $this->assertEquals(array(array('name' => $name, 'score' => $score)), $scoreList->getScoreList());
+        $this->assertEquals(array(array('name' => $name, 'score' => $score)), $resultList->getScoreList());
     }
 
     public function testFinalResults()
@@ -28,22 +29,21 @@ class ScoreListTest extends \PHPUnit_Framework_TestCase
             array('name' => 'third', 'score' => 3),
         );
 
-        $scoreList = new ScoreList();
+        $resultList = new ResultList();
         foreach ($expectedResult as $candidate) {
-            $scoreList->addCandidate($candidate['name'], $candidate['score']);
+            $resultList->addCandidate($candidate['name'], $candidate['score']);
         }
 
-        $this->assertEquals($expectedResult, $scoreList->getFinalResult());
+        $this->assertEquals($expectedResult, $resultList->getFinalResult());
     }
 
     public function testSecondCandidateIsBetter()
     {
-        $scoreList = new ScoreList();
-        $scoreList->addCandidate('John', 1200);
-        $scoreList->addCandidate('Wilma', 1500);
+        $resultList = new ResultList();
+        $resultList->addCandidate('John', 1200);
+        $resultList->addCandidate('Wilma', 1500);
 
-        $result = $scoreList->getFinalResult();
-
+        $result = $resultList->getFinalResult();
 
         $this->assertEquals('Wilma', $result[0]['name']);
         $this->assertEquals('John', $result[1]['name']);

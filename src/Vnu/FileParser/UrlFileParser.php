@@ -5,7 +5,6 @@
 
 namespace Vnu\FileParser;
 
-
 use Vnu\Collection;
 use Vnu\Model\Url;
 

@@ -3,10 +3,9 @@
  * Winfred Peereboom <wpeereboom@gmail.com>
  */
 
-namespace Vnu;
+namespace Vnu\Score;
 
-
-interface ScoreListInterface {
+interface ResultListInterface {
 
     public function getFinalResult();
 

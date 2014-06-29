@@ -6,8 +6,9 @@
 namespace Vnu;
 
 use Vnu\FileParser\FileParserInterface;
-use Vnu\FileParser\UrlFileParser;
-use Vnu\FileReader\BuzzWordFileParser;
+use Vnu\JobPosting\RetrieverInterface;
+use Vnu\Score\Calculator;
+use Vnu\Score\ResultListInterface;
 
 /**
  * Class BuzzwordBingo
@@ -27,24 +28,24 @@ class BuzzwordBingo
     private $urlFileParser;
 
     /**
-     * @var JobPostingParserInterface
+     * @var RetrieverInterface
      */
-    private $jobPostingParser;
+    private $jobPostingRetriever;
 
     /**
-     * @var ScoreListInterface
+     * @var ResultListInterface
      */
     private $scoreList;
 
     public function __construct(
         FileParserInterface $buzzWordFileParser,
         FileParserInterface $urlFileParser,
-        JobPostingParserInterface $jobPostingParser,
-        ScoreListInterface $scoreList)
+        RetrieverInterface $jobPostingRetriever,
+        ResultListInterface $scoreList)
     {
         $this->buzzWordFileParser = $buzzWordFileParser;
         $this->urlFileParser = $urlFileParser;
-        $this->jobPostingParser = $jobPostingParser;
+        $this->jobPostingRetriever = $jobPostingRetriever;
         $this->scoreList = $scoreList;
     }
 
@@ -56,8 +57,7 @@ class BuzzwordBingo
     public function run()
     {
         foreach ($this->urlFileParser->getStructuredContent() as $url) {
-            /** @var Url $url */
-            $content = $this->jobPostingParser->getContent($url->getUrl());
+            $content = $this->jobPostingRetriever->getContent($url->getUrl());
             $this->scoreList->addCandidate($url->getUrl(), $this->calculateScore($content));
         }
 
@@ -71,26 +71,13 @@ class BuzzwordBingo
      */
     protected function calculateScore($content)
     {
-        $score = 0;
+        $totalScore = 0;
 
         foreach ($this->buzzWordFileParser->getStructuredContent() as $buzzWord) {
-            /** @var BuzzWord $buzzWord */
-            if ($this->wordOccursInContent($content, $buzzWord->getWord())) {
-                $score = $score + $buzzWord->getScore();
-            }
+            $scoreCalculator = new Calculator($content, $buzzWord->getWord(), $buzzWord->getScore());
+            $totalScore = $totalScore + $scoreCalculator->getCalculatedScore();
         }
 
-        return $score;
-    }
-
-    /**
-     * @param $content
-     * @param $word
-     *
-     * @return int
-     */
-    protected function wordOccursInContent($content, $word)
-    {
-        return strpos($content, $word);
+        return $totalScore;
     }
 }

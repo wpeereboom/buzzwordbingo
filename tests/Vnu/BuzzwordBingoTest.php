@@ -5,10 +5,9 @@
 
 namespace Vnu;
 
-use Vnu\FileParser\BuzzWordFileParser;
-use Vnu\FileParser\UrlFileParser;
 use Vnu\Model\BuzzWord;
 use Vnu\Model\Url;
+use Vnu\Score\ResultList;
 
 class BuzzwordBingoTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,8 +20,8 @@ class BuzzwordBingoTest extends \PHPUnit_Framework_TestCase
         $bingo = new BuzzwordBingo(
             $this->getBuzzWordFileParserMock($buzzWords),
             $this->getUrlParserMock($jobs),
-            $this->getJobPostingParserMock($jobs),
-            new ScoreList()
+            $this->getJobPostingRetrieverMock($jobs),
+            new ResultList()
         );
         $result = $bingo->run();
 
@@ -31,7 +30,6 @@ class BuzzwordBingoTest extends \PHPUnit_Framework_TestCase
         foreach($jobs as $job) {
             $this->assertEquals($job['url'], $result[$job['expectedIndexPosition']]['name']);
         }
-
     }
 
     /**
@@ -67,9 +65,9 @@ class BuzzwordBingoTest extends \PHPUnit_Framework_TestCase
      * @param array $jobs
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
-    protected function getJobPostingParserMock($jobs)
+    protected function getJobPostingRetrieverMock($jobs)
     {
-        $jobPostingParserMock = $this->getMockBuilder('Vnu\JobPostingParser')->getMock();
+        $jobPostingParserMock = $this->getMockBuilder('Vnu\JobPosting\Retriever')->getMock();
 
         foreach($jobs as $key => $job) {
             $jobPostingParserMock->expects($this->at($key))->method('getContent')->will($this->returnValue($job['content']));
@@ -92,7 +90,7 @@ class BuzzwordBingoTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'url' => 'http://some-second.org',
-                    'content' => '<html><body><p>Bla</p><br/>Management, Programming out of the box</body></html>',
+                    'content' => '<html><body><p>Bla</p><br/>Management, Programming out of the box. Programming in the box</body></html>',
                     'expectedIndexPosition' => 2,
                 ),
                 array(
